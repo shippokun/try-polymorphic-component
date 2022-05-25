@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { PolymorphicPropsWithRef } from "./type";
+export type { PolymorphicPropsWithRef as PolymorphicComponentProps } from "./type";
 
 type Props = {
   children: React.ReactNode;
@@ -18,3 +19,9 @@ export const Polymorphic = <
 
   return <Element {...restProps}>{children}</Element>;
 };
+
+export type PolymorphicComponentType<P, D extends React.ElementType> = <
+  E extends React.ElementType = D,
+>(
+  props: PolymorphicPropsWithRef<P, E>,
+) => React.ReactElement | null;
