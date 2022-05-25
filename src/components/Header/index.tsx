@@ -1,12 +1,26 @@
 import * as React from "react";
 import styled from "styled-components";
 
-import { Polymorphic } from "../libs";
+import {
+  Polymorphic,
+  PolymorphicComponentType,
+  PolymorphicComponentProps,
+} from "../libs";
 
-type Props = React.ComponentProps<typeof Polymorphic> & {
+type OwnProps = {
   isCurrent?: boolean;
 };
-export const Header = (props: Props) => {
+
+type Props<E extends React.ElementType> = PolymorphicComponentProps<
+  OwnProps,
+  E
+>;
+
+const defaultElement: React.ElementType = "a";
+
+export const Header = <E extends React.ElementType = typeof defaultElement>(
+  props: Props<E>,
+) => {
   return (
     <Wrap>
       <Element {...props} />
@@ -30,7 +44,10 @@ const Wrap = styled.div`
   }
 `;
 
-const Element = styled(Polymorphic)<{ isCurrent: Props["isCurrent"] }>`
+const Element: PolymorphicComponentType<
+  OwnProps,
+  typeof defaultElement
+> = styled(Polymorphic)<OwnProps>`
   border-bottom: 1px solid
     ${(props) => (props.isCurrent ? "orange" : "transparent")};
   pointer-events: auto;
